@@ -88,3 +88,27 @@ SELECT
 FROM censo_agregado c
 LEFT JOIN sisvan_agregado s ON c.id_municipio = s.id_municipio AND c.ano = s.ano
 LEFT JOIN `basedosdados.br_bd_diretorios_brasil.municipio` d ON c.id_municipio = d.id_municipio;
+
+
+## 💡 Principais Resultados & Insights Encontrados
+
+* **Indicadores Nacionais Consolidados:**
+  * Total de Matrículas Analisadas: **~43 Milhões**[cite: 26]
+  * Taxa de Aprovação Média: **92,16%**[cite: 26]
+  * Índice de Abandono Escolar: **5,18%**[cite: 26]
+  * Cobertura Nutricional (SISVAN): **44,96%**[cite: 26]
+
+* **Validação da Hipótese do Projeto:**
+  * O cruzamento dos dados confirmou que municípios com maiores déficits em infraestrutura básica (falta de água potável, coleta de lixo, saneamento e internet) e maiores taxas de vulnerabilidade nutricional apresentam as maiores taxas de **abandono** e **reprovação escolar**[cite: 34].
+  * Regiões que asseguram infraestrutura completa e cobertura alimentar constante mantêm taxas de aprovação significativamente mais altas e estáveis[cite: 34].
+
+* **Municípios em Situação Crítica (Alta Vulnerabilidade Nutricional e Evasão):**
+  * Destaques em alta taxa de abandono associada à vulnerabilidade alimentar: **Santa Rosa do Purus (AC)** (49,80% vul. nut. / 12,12% abandono) e **Jacareacanga (PA)** (46,56% vul. nut. / 12,77% abandono)[cite: 27].
+
+---
+
+## 🛠️ Tratamento de Anomalias no Power BI
+
+* **Fator de Escala (10.000):** Indicadores percentuais foram multiplicados por 10.000 no SQL como inteiros para otimização de processamento e armazenamento no BigQuery, sendo revertidos no Power Query / DAX (`/ 10000`) para a escala percentual[cite: 33, 34].
+* **Zeros vs. Nulos:** Aplicação da lógica DAX (`IF(ISBLANK([Medida]), BLANK(), [Medida])`) para diferenciar municípios sem dados daqueles com 0% real, evitando distorções nas médias estaduais[cite: 34].
+* **Impacto da Pandemia (2020–2021):** Para contornar a queda drástica nos registros do SISVAN decorrente da interrupção das aulas presenciais na COVID-19, os dados foram mantidos como `BLANK` (sem invenção de médias) e acompanhados de *Tooltips* explicativos[cite: 34].
